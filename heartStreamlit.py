@@ -18,19 +18,19 @@ except Exception as e:
 
 # Define the features and their descriptions
 features = {
-    'age': 'Patient\'s age in years',
-    'sex': 'Sex (1 = male; 0 = female)',
-    'cp': 'Chest pain type (0 = typical angina, 1 = atypical angina, 2 = non-anginal pain, 3 = asymptomatic)',
-    'trestbps': 'Resting blood pressure (in mm Hg on admission to the hospital)',
-    'chol': 'Serum cholesterol in mg/dl',
-    'fbs': 'Fasting blood sugar > 120 mg/dl (1 = true; 0 = false)',
-    'restecg': 'Resting electrocardiographic results (0 = normal; 1 = having ST-T wave abnormality; 2 = \' criteria)',
-    'thalach': 'Maximum heart rate achieved',
-    'exang': 'Exercise induced angina (1 = yes; 0 = no)',
-    'oldpeak': 'ST depression induced by exercise relative to rest',
-    'slope': 'The slope of the peak exercise ST segment (0 = upsloping; 1 = flat; 2 = downsloping)',
-    'ca': 'Number of major vessels colored by fluoroscopy (0-3)',
-    'thal': 'Status of the heart (1 = normal; 2 = fixed defect; 3 = reversible defect)'
+    'age': 'Age',
+    'sex': 'Sex',
+    'cp': 'Chest Pain Type',
+    'trestbps': 'Resting Blood Pressure',
+    'chol': 'Serum Cholesterol in mg/dl',
+    'fbs': 'Fasting Blood Sugar > 120 mg/dl',
+    'restecg': 'Resting Electrocardiographic Results',
+    'thalach': 'Maximum Heart Rate Achieved',
+    'exang': 'Exercise Induced Angina',
+    'oldpeak': 'ST Depression Induced by Exercise Relative to Rest',
+    'slope': 'Slope of the Peak Exercise ST Segment',
+    'ca': 'Number of Major Vessels Colored by Fluoroscopy',
+    'thal': 'Thalassemia'
 }
 
 st.write("Enter the patient's details to predict the likelihood of heart disease.")
@@ -56,7 +56,7 @@ input_data = {
 input_df = pd.DataFrame([input_data])
 
 # Button for prediction
-if st.button('Predict'):
+if 'model' in globals() and st.button('Predict'):
     try:
         # Make prediction
         prediction = model.predict(input_df)
@@ -71,5 +71,7 @@ if st.button('Predict'):
         st.write(f"Prediction Probability: {prediction_proba[0][1]:.2f}")
     except Exception as e:
         st.error(f"An error occurred during prediction: {e}")
+elif 'model' not in globals():
+    st.warning("Please ensure that the model is loaded successfully before making predictions.")
 
 st.write("Note: This tool is for educational purposes only and not a substitute for professional medical advice.")
