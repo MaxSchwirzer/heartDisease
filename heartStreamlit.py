@@ -24,7 +24,7 @@ features = {
     'trestbps': 'Resting blood pressure (in mm Hg on admission to the hospital)',
     'chol': 'Serum cholesterol in mg/dl',
     'fbs': 'Fasting blood sugar > 120 mg/dl (1 = true; 0 = false)',
-    'restecg': 'Resting electrocardiographic results (0 = normal; 1 = having ST-T wave abnormality; 2 = showing probable or definite left ventricular hypertrophy by Estes\' criteria)',
+    'restecg': 'Resting electrocardiographic results (0 = normal; 1 = having ST-T wave abnormality; 2 = \' criteria)',
     'thalach': 'Maximum heart rate achieved',
     'exang': 'Exercise induced angina (1 = yes; 0 = no)',
     'oldpeak': 'ST depression induced by exercise relative to rest',
