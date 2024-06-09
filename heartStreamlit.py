@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import pickle
+import sklearn
 
 # Load the pretrained model with error handling
 model_filename = 'dssheart.pkl'
