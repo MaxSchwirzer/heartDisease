@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import pickle
-import os
 
 # Load the pretrained model with error handling
 model_filename = 'dssheart.pkl'
@@ -20,26 +19,38 @@ except Exception as e:
 # Define the features and their descriptions
 features = {
     'age': 'Age',
-    'sex': 'Sex (1 = male; 0 = female)',
-    'cp': 'Chest Pain Type (0 = typical angina, 1 = atypical angina, 2 = non-anginal pain, 3 = asymptomatic)',
+    'sex': 'Sex',
+    'cp': 'Chest Pain Type',
     'trestbps': 'Resting Blood Pressure',
     'chol': 'Serum Cholesterol in mg/dl',
-    'fbs': 'Fasting Blood Sugar > 120 mg/dl (1 = true; 0 = false)',
-    'restecg': 'Resting Electrocardiographic Results (0 = normal, 1 = having ST-T wave abnormality, 2 = left ventricular hypertrophy)',
+    'fbs': 'Fasting Blood Sugar > 120 mg/dl',
+    'restecg': 'Resting Electrocardiographic Results',
     'thalach': 'Maximum Heart Rate Achieved',
-    'exang': 'Exercise Induced Angina (1 = yes; 0 = no)',
+    'exang': 'Exercise Induced Angina',
     'oldpeak': 'ST Depression Induced by Exercise Relative to Rest',
-    'slope': 'Slope of the Peak Exercise ST Segment (0 = upsloping, 1 = flat, 2 = downsloping)',
-    'ca': 'Number of Major Vessels (0-3) Colored by Fluoroscopy',
-    'thal': 'Thalassemia (1 = normal; 2 = fixed defect; 3 = reversible defect)'
+    'slope': 'Slope of the Peak Exercise ST Segment',
+    'ca': 'Number of Major Vessels Colored by Fluoroscopy',
+    'thal': 'Thalassemia'
 }
 
 st.write("Enter the patient's details to predict the likelihood of heart disease.")
 
-# Create input fields for each feature
-input_data = {}
-for feature, description in features.items():
-    input_data[feature] = st.number_input(description)
+# Create input fields for each feature with specified constraints
+input_data = {
+    'age': st.number_input(features['age'], min_value=0, step=1),
+    'sex': st.selectbox(features['sex'], options=[1, 0]),
+    'cp': st.selectbox(features['cp'], options=[0, 1, 2, 3]),
+    'trestbps': st.number_input(features['trestbps']),
+    'chol': st.number_input(features['chol']),
+    'fbs': st.selectbox(features['fbs'], options=[1, 0]),
+    'restecg': st.selectbox(features['restecg'], options=[0, 1, 2]),
+    'thalach': st.number_input(features['thalach']),
+    'exang': st.selectbox(features['exang'], options=[1, 0]),
+    'oldpeak': st.number_input(features['oldpeak']),
+    'slope': st.selectbox(features['slope'], options=[0, 1, 2]),
+    'ca': st.selectbox(features['ca'], options=[0, 1, 2, 3]),
+    'thal': st.selectbox(features['thal'], options=[1, 2, 3])
+}
 
 # Convert input data to a DataFrame
 input_df = pd.DataFrame([input_data])
