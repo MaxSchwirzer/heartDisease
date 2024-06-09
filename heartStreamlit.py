@@ -1,11 +1,21 @@
 import streamlit as st
 import pandas as pd
 import pickle
+import os
 
-# Load the pretrained model
+# Load the pretrained model with error handling
 model_filename = 'dssheart.pkl'
-with open(model_filename, 'rb') as file:
-    model = pickle.load(file)
+
+st.title("Heart Disease Prediction")
+
+try:
+    with open(model_filename, 'rb') as file:
+        model = pickle.load(file)
+    st.success("Model loaded successfully!")
+except FileNotFoundError:
+    st.error(f"Model file {model_filename} not found. Please ensure it is in the correct directory.")
+except Exception as e:
+    st.error(f"An error occurred while loading the model: {e}")
 
 # Define the features and their descriptions
 features = {
@@ -24,7 +34,6 @@ features = {
     'thal': 'Thalassemia (1 = normal; 2 = fixed defect; 3 = reversible defect)'
 }
 
-st.title("Heart Disease Prediction")
 st.write("Enter the patient's details to predict the likelihood of heart disease.")
 
 # Create input fields for each feature
@@ -41,16 +50,15 @@ if st.button('Predict'):
         # Make prediction
         prediction = model.predict(input_df)
         prediction_proba = model.predict_proba(input_df)
-        
+
         # Display the prediction
         if prediction[0] == 1:
             st.write("The model predicts that the patient **has heart disease**.")
         else:
             st.write("The model predicts that the patient **does not have heart disease**.")
-        
+
         st.write(f"Prediction Probability: {prediction_proba[0][1]:.2f}")
     except Exception as e:
-        st.error(f"An error occurred: {e}")
+        st.error(f"An error occurred during prediction: {e}")
 
 st.write("Note: This tool is for educational purposes only and not a substitute for professional medical advice.")
-
