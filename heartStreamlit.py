@@ -13,6 +13,8 @@ try:
     st.success("Model loaded successfully!")
 except FileNotFoundError:
     st.error(f"Model file {model_filename} not found. Please ensure it is in the correct directory.")
+except ImportError as e:
+    st.error(f"An error occurred while loading the model: {e}. Ensure the required packages are installed.")
 except Exception as e:
     st.error(f"An error occurred while loading the model: {e}")
 
