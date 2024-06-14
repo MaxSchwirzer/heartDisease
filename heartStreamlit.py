@@ -1,9 +1,6 @@
 import streamlit as st
 import pandas as pd
 import pickle
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC
 
 # Load the pretrained model with error handling
 model_filename = 'dssheart.pkl'
@@ -16,8 +13,6 @@ try:
     st.success("Model loaded successfully!")
 except FileNotFoundError:
     st.error(f"Model file {model_filename} not found. Please ensure it is in the correct directory.")
-except ImportError as e:
-    st.error(f"An error occurred while loading the model: {e}. Ensure the required packages are installed.")
 except Exception as e:
     st.error(f"An error occurred while loading the model: {e}")
 
