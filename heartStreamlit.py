@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 import pickle
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
 
 # Load the pretrained model with error handling
 model_filename = 'dssheart.pkl'
