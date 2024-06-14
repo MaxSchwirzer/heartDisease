@@ -2,17 +2,10 @@ import streamlit as st
 import pandas as pd
 import pickle
 
-# Attempt to import sklearn and handle errors
 try:
     from sklearn.linear_model import LogisticRegression
     from sklearn.ensemble import RandomForestClassifier
     from sklearn.svm import SVC
-    from sklearn.model_selection import train_test_split
-    from sklearn.preprocessing import StandardScaler, OneHotEncoder
-    from sklearn.compose import ColumnTransformer
-    from sklearn.pipeline import Pipeline
-    from sklearn.impute import SimpleImputer
-    from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 except ImportError as e:
     st.error(f"An error occurred while importing sklearn modules: {e}")
     raise
