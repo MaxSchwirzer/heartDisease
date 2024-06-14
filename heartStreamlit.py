@@ -51,7 +51,7 @@ input_data = {
     'oldpeak': st.number_input(features['oldpeak']),
     'slope': st.selectbox(features['slope'], options=[0, 1, 2]),
     'ca': st.selectbox(features['ca'], options=[0, 1, 2, 3]),
-    'thal': st.selectbox(features['thal'], options=[1, 2, 3])
+    'thal': st.selectbox(features['thal'], options=[0, 1, 2, 3])  # Include 0 as 'unknown'
 }
 
 # Convert input data to a DataFrame
