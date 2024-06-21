@@ -2,21 +2,27 @@ import streamlit as st
 import pandas as pd
 import pickle
 
-# Load the pretrained model with error handling
+# File names
 model_filename = 'dssheart.pkl'
+pipeline_filename = 'preprocessing_pipeline.pkl'
 
 st.title("Heart Disease Prediction")
 
+# Load the model and preprocessing pipeline
 try:
     with open(model_filename, 'rb') as file:
         model = pickle.load(file)
     st.success("Model loaded successfully!")
-except FileNotFoundError:
-    st.error(f"Model file {model_filename} not found. Please ensure it is in the correct directory.")
+    
+    with open(pipeline_filename, 'rb') as file:
+        pipeline = pickle.load(file)
+    st.success("Preprocessing pipeline loaded successfully!")
+except FileNotFoundError as e:
+    st.error(f"File not found: {e.filename}")
 except ImportError as e:
-    st.error(f"An error occurred while loading the model: {e}. Ensure the required packages are installed.")
+    st.error(f"Import error: {e}")
 except Exception as e:
-    st.error(f"An error occurred while loading the model: {e}")
+    st.error(f"An error occurred: {e}")
 
 # Define the features and their descriptions
 features = {
@@ -58,11 +64,14 @@ input_data = {
 input_df = pd.DataFrame([input_data])
 
 # Button for prediction
-if 'model' in globals() and st.button('Predict'):
+if 'model' in globals() and 'pipeline' in globals() and st.button('Predict'):
     try:
+        # Apply preprocessing to the input data
+        input_preprocessed = pipeline.transform(input_df)
+
         # Make prediction
-        prediction = model.predict(input_df)
-        prediction_proba = model.predict_proba(input_df)
+        prediction = model.predict(input_preprocessed)
+        prediction_proba = model.predict_proba(input_preprocessed)
 
         # Display the prediction
         if prediction[0] == 1:
@@ -73,7 +82,7 @@ if 'model' in globals() and st.button('Predict'):
         st.write(f"Prediction Probability: {prediction_proba[0][1]:.2f}")
     except Exception as e:
         st.error(f"An error occurred during prediction: {e}")
-elif 'model' not in globals():
-    st.warning("Please ensure that the model is loaded successfully before making predictions.")
+elif 'model' not in globals() or 'pipeline' not in globals():
+    st.warning("Please ensure that the model and preprocessing pipeline are loaded successfully before making predictions.")
 
 st.write("Note: This tool is for educational purposes only and not a substitute for professional medical advice.")
