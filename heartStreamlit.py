@@ -17,6 +17,7 @@ try:
     with open(pipeline_filename, 'rb') as file:
         pipeline = pickle.load(file)
     st.success("Preprocessing pipeline loaded successfully!")
+
 except FileNotFoundError as e:
     st.error(f"File not found: {e.filename}")
 except ImportError as e:
@@ -24,7 +25,7 @@ except ImportError as e:
 except Exception as e:
     st.error(f"An error occurred: {e}")
 
-# Define the features and their descriptions
+# Define the features and their descriptions (assuming you have predefined this)
 features = {
     'age': 'Age',
     'sex': 'Sex',
