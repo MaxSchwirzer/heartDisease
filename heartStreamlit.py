@@ -3,7 +3,7 @@ import pandas as pd
 import pickle
 
 # Load the pretrained model with error handling
-model_filename = 'dssheart.pkl'
+model_filename = 'dssheart.knn'
 
 st.title("Heart Disease Prediction")
 
