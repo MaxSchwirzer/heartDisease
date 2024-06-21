@@ -1,6 +1,10 @@
 import streamlit as st
 import pandas as pd
 import pickle
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
 
 # Load the pretrained model with error handling
 model_filename = 'dssheart.knn'
@@ -57,12 +61,36 @@ input_data = {
 # Convert input data to a DataFrame
 input_df = pd.DataFrame([input_data])
 
+# Define the preprocessing steps
+categorical_vars = ['sex', 'cp', 'fbs', 'restecg', 'exang', 'slope', 'ca', 'thal']
+numerical_vars = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']
+
+numeric_transformer = Pipeline(steps=[
+    ('imputer', SimpleImputer(strategy='mean')),
+    ('scaler', StandardScaler())
+])
+
+categorical_transformer = Pipeline(steps=[
+    ('imputer', SimpleImputer(strategy='most_frequent')),
+    ('onehot', OneHotEncoder(handle_unknown='ignore'))
+])
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', numeric_transformer, numerical_vars),
+        ('cat', categorical_transformer, categorical_vars)
+    ]
+)
+
+# Preprocess the input data
+input_preprocessed = preprocessor.fit_transform(input_df)
+
 # Button for prediction
 if 'model' in globals() and st.button('Predict'):
     try:
         # Make prediction
-        prediction = model.predict(input_df)
-        prediction_proba = model.predict_proba(input_df)
+        prediction = model.predict(input_preprocessed)
+        prediction_proba = model.predict_proba(input_preprocessed)
 
         # Display the prediction
         if prediction[0] == 1:
